@@ -26,10 +26,11 @@ void addTodo(Event event) {
 void updateUI() {
   todoUI.children.clear();
   todoList.forEach((todo) {
+    DateTime now = new DateTime.now();
     DivElement div = Element.div();
     ButtonElement taskButton = ButtonElement();
     taskButton.className = 'task-button';
-    taskButton.text = todo;
+    taskButton.text = todo+'\n'+now.toString();
     taskButton.onClick.listen(toggleState);
     div.children.add(taskButton);
     todoUI.children.add(div);
