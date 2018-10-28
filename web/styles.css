@@ -48,3 +48,11 @@ input[type=text] {
     padding: 12px 20px;
     white-space: pre-wrap;
 }
+
+.finished-task-button {
+    width: 70%;
+    text-align: left;
+    padding: 12px 20px;
+    white-space: pre-wrap;
+    text-decoration: line-through;
+}

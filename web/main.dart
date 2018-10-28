@@ -2,12 +2,15 @@ import 'dart:html';
 
 InputElement todoInput;
 DivElement todoUI;
+DivElement todoDoneUI;
 ButtonElement buttonAdd;
-List<String> todoList = [];
+List<String> pendingTodoList = [];
+List<String> doneTodoList = [];
 
 void main() {
   todoInput = querySelector('#todo');
-  todoUI = querySelector('#task-list');
+  todoUI = querySelector('#pending-task-list');
+  todoDoneUI = querySelector('#finished-task-list');
   buttonAdd = querySelector('#add');
   buttonAdd.onClick.listen(addTodo);
 }
@@ -17,7 +20,7 @@ void addTodo(Event event) {
   if(todoInput.value == '')
     return;
 
-  todoList.add(todoInput.value);
+  pendingTodoList.add(todoInput.value);
   updateUI();
   todoInput.value = '';
 }
@@ -25,7 +28,9 @@ void addTodo(Event event) {
 // Update UI responsible to display all tasks
 void updateUI() {
   todoUI.children.clear();
-  for (var i=0; i<todoList.length; i++) {
+  todoDoneUI.children.clear();
+
+  for (var i=0; i<pendingTodoList.length; i++) {
     DateTime now = new DateTime.now();
     DivElement div = Element.div();
     ButtonElement buttonRemove = ButtonElement();
@@ -37,23 +42,55 @@ void updateUI() {
     buttonRemove.onClick.listen(removeTask);
 
     taskButton.className = 'task-button';
-    taskButton.text = todoList[i]+'\n'+now.toString();
-    taskButton.onClick.listen(toggleState);
+    taskButton.text = pendingTodoList[i]+'\n'+now.toString();
+    taskButton.id = i.toString();
+    taskButton.onClick.listen(toggleToDoneState);
 
     div.children.add(taskButton);
     div.children.add(buttonRemove);
     todoUI.children.add(div);
   };
+
+  for (var i=0; i<doneTodoList.length; i++) {
+    DateTime now = new DateTime.now();
+    DivElement div = Element.div();
+    ButtonElement buttonRemove = ButtonElement();
+    ButtonElement taskButton = ButtonElement();
+
+    buttonRemove.className = 'add-button';
+    buttonRemove.text = 'X';
+    buttonRemove.id = i.toString();
+    buttonRemove.onClick.listen(removeTask);
+
+    taskButton.className = 'finished-task-button';
+    taskButton.text = doneTodoList[i]+'\n'+now.toString();
+    taskButton.id = i.toString();
+    taskButton.onClick.listen(toggleToPendingState);
+
+    div.children.add(taskButton);
+    div.children.add(buttonRemove);
+    todoDoneUI.children.add(div);
+  };
 }
 
-// Toggle state between done and pending
-void toggleState(Event event) {
+// Toggle state from pending to done
+void toggleToDoneState(Event event) {
   Element button = (event.currentTarget as Element);
+  int index = int.parse(button.id.split('-')[0]);
+  pendingTodoList.removeAt(index);
+  String text = button.text.split('\n')[0];
+  doneTodoList.add(text);
+  updateUI();
+}
 
-  if(button.style.textDecoration == 'line-through')
-    button.style.textDecoration = 'none';
-  else
-    button.style.textDecoration = 'line-through';
+// Toggle state from done to pending
+void toggleToPendingState(Event event) {
+  Element button = (event.currentTarget as Element);
+  int index = int.parse(button.id.split('-')[0]);
+  doneTodoList.removeAt(index);
+  String text = button.text.split('\n')[0];
+  pendingTodoList.add(text);
+  updateUI();
 }
 
 // Remove element from the list
@@ -62,6 +99,6 @@ void removeTask(MouseEvent event) {
   Element div = (event.currentTarget as Element).parent;
   Element button = (event.currentTarget as Element);
   int index = int.parse(button.id.split('-')[0]);
-  todoList.removeAt(index);
+  pendingTodoList.removeAt(index);
   div.remove();
 }
