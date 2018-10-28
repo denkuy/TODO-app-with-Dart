@@ -14,6 +14,9 @@ void main() {
 
 // Add  a new task to the list
 void addTodo(Event event) {
+  if(todoInput.value == '')
+    return;
+
   todoList.add(todoInput.value);
   updateUI();
   todoInput.value = '';
@@ -24,9 +27,21 @@ void updateUI() {
   todoUI.children.clear();
   todoList.forEach((todo) {
     DivElement div = Element.div();
-    Element span = Element.span();
-    span.text = todo;
-    div.children.add(span);
+    ButtonElement taskButton = ButtonElement();
+    taskButton.className = 'task-button';
+    taskButton.text = todo;
+    taskButton.onClick.listen(toggleState);
+    div.children.add(taskButton);
     todoUI.children.add(div);
   });
+}
+
+// Toggle state between done and pending
+void toggleState(Event event) {
+  Element button = (event.currentTarget as Element);
+
+  if(button.style.textDecoration == 'line-through')
+    button.style.textDecoration = 'none';
+  else
+    button.style.textDecoration = 'line-through';
 }
