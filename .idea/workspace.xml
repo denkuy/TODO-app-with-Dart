@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="35a8e047-ebcf-484f-9234-70716d29570b" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/web/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/web/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/styles.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -27,7 +26,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="201" />
-          <entry key="dart" value="420" />
+          <entry key="dart" value="498" />
           <entry key="html" value="165" />
           <entry key="yaml" value="13" />
         </counts>
@@ -35,7 +34,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="201" />
-          <entry key="Dart" value="420" />
+          <entry key="Dart" value="498" />
           <entry key="HTML" value="165" />
           <entry key="YAML" value="13" />
         </counts>
@@ -66,8 +65,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/web/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="32" column="30" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
+            <state relative-caret-position="397">
+              <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
             </state>
           </provider>
         </entry>
@@ -95,6 +94,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>task</find>
+      <find>todoList</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -181,12 +181,12 @@
       <option name="presentableId" value="Default" />
       <updated>1540688865556</updated>
       <workItem from="1540688869609" duration="6278000" />
-      <workItem from="1540725459348" duration="4561000" />
+      <workItem from="1540725459348" duration="5465000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10839000" />
+    <option name="totallyTimeSpent" value="11743000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="10" y="20" width="1260" height="620" extended-state="0" />
@@ -244,8 +244,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="32" column="30" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
+        <state relative-caret-position="397">
+          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
         </state>
       </provider>
     </entry>

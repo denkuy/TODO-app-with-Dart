@@ -25,16 +25,25 @@ void addTodo(Event event) {
 // Update UI responsible to display all tasks
 void updateUI() {
   todoUI.children.clear();
-  todoList.forEach((todo) {
+  for (var i=0; i<todoList.length; i++) {
     DateTime now = new DateTime.now();
     DivElement div = Element.div();
+    ButtonElement buttonRemove = ButtonElement();
     ButtonElement taskButton = ButtonElement();
+
+    buttonRemove.className = 'add-button';
+    buttonRemove.text = 'X';
+    buttonRemove.id = i.toString();
+    buttonRemove.onClick.listen(removeTask);
+
     taskButton.className = 'task-button';
-    taskButton.text = todo+'\n'+now.toString();
+    taskButton.text = todoList[i]+'\n'+now.toString();
     taskButton.onClick.listen(toggleState);
+
     div.children.add(taskButton);
+    div.children.add(buttonRemove);
     todoUI.children.add(div);
-  });
+  };
 }
 
 // Toggle state between done and pending
@@ -45,4 +54,14 @@ void toggleState(Event event) {
     button.style.textDecoration = 'none';
   else
     button.style.textDecoration = 'line-through';
+}
+
+// Remove element from the list
+void removeTask(MouseEvent event) {
+  event.stopPropagation();
+  Element div = (event.currentTarget as Element).parent;
+  Element button = (event.currentTarget as Element);
+  int index = int.parse(button.id.split('-')[0]);
+  todoList.removeAt(index);
+  div.remove();
 }
