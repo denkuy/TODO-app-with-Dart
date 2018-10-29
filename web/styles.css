@@ -19,7 +19,7 @@ html, body {
 input[type=text] {
     width: 70%;
     padding: 12px 20px;
-    margin: 50px 0;
+    margin: 10px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -29,7 +29,7 @@ input[type=text] {
 .add-button {
     border: none;
     padding: 12px 20px;
-    margin: 8px 0;
+    margin: 5px 0;
     text-align: center;
     display: inline-block;
     font-size: 16px;
@@ -55,4 +55,12 @@ input[type=text] {
     padding: 12px 20px;
     white-space: pre-wrap;
     text-decoration: line-through;
+}
+
+h2 {
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px #a5b6a4;
 }

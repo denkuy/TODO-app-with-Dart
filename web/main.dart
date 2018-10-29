@@ -4,8 +4,8 @@ InputElement todoInput;
 DivElement todoUI;
 DivElement todoDoneUI;
 ButtonElement buttonAdd;
-List<String> pendingTodoList = [];
-List<String> doneTodoList = [];
+List<Todo> pendingTodoList = [];
+List<Todo> doneTodoList = [];
 
 void main() {
   todoInput = querySelector('#todo');
@@ -20,85 +20,90 @@ void addTodo(Event event) {
   if(todoInput.value == '')
     return;
 
-  pendingTodoList.add(todoInput.value);
-  updateUI();
+  Todo todo = Todo(todoInput.value, DateTime.now(), "pending");
+  todo.addTodo(todoUI);
+  pendingTodoList.add(todo);
   todoInput.value = '';
 }
 
-// Update UI responsible to display all tasks
-void updateUI() {
-  todoUI.children.clear();
-  todoDoneUI.children.clear();
+class Todo {
+  static int _id = 0;
+  int id;
+  String text;
+  String state;
+  DateTime date;
 
-  for (var i=0; i<pendingTodoList.length; i++) {
-    DateTime now = new DateTime.now();
+  Todo(String text, DateTime date, String state) : this.id = _id++ {
+    this.text = text;
+    this.date = date;
+    this.state = state;
+  }
+
+  // Remove element from the list
+  void removeTask(MouseEvent event) {
+    event.stopPropagation();
+    Element div = (event.currentTarget as Element).parent;
+    Element button = (event.currentTarget as Element);
+    int index = int.parse(button.id.split('-')[0]);
+    pendingTodoList.removeWhere((todo) => todo.id == index);
+    div.remove();
+  }
+
+  // Add  a new task to the list
+  void addTodo(DivElement parentDiv) {
     DivElement div = Element.div();
     ButtonElement buttonRemove = ButtonElement();
     ButtonElement taskButton = ButtonElement();
 
     buttonRemove.className = 'add-button';
     buttonRemove.text = 'X';
-    buttonRemove.id = i.toString();
+    buttonRemove.id = id.toString();
     buttonRemove.onClick.listen(removeTask);
 
     taskButton.className = 'task-button';
-    taskButton.text = pendingTodoList[i]+'\n'+now.toString();
-    taskButton.id = i.toString();
-    taskButton.onClick.listen(toggleToDoneState);
+    taskButton.text = text+'\n'+date.toString();
+    taskButton.id = id.toString();
+
+    if (state == "pending") {
+      taskButton.onClick.listen(toggleToDoneState);
+    }
+    else {
+      taskButton.style.textDecoration = 'line-through';
+      taskButton.onClick.listen(toggleToPendingState);
+    }
 
     div.children.add(taskButton);
     div.children.add(buttonRemove);
-    todoUI.children.add(div);
-  };
+    parentDiv.children.add(div);
+  }
 
-  for (var i=0; i<doneTodoList.length; i++) {
-    DateTime now = new DateTime.now();
-    DivElement div = Element.div();
-    ButtonElement buttonRemove = ButtonElement();
-    ButtonElement taskButton = ButtonElement();
+  // Toggle state from pending to done
+  void toggleToDoneState(Event event) {
+    Element div = (event.currentTarget as Element).parent;
+    Element button = (event.currentTarget as Element);
+    int index = int.parse(button.id);
 
-    buttonRemove.className = 'add-button';
-    buttonRemove.text = 'X';
-    buttonRemove.id = i.toString();
-    buttonRemove.onClick.listen(removeTask);
+    Todo todo = pendingTodoList.firstWhere((todo) => todo.id == index);
+    todo.state = "done";
+    doneTodoList.add(todo);
+    todo.addTodo(todoDoneUI);
 
-    taskButton.className = 'finished-task-button';
-    taskButton.text = doneTodoList[i]+'\n'+now.toString();
-    taskButton.id = i.toString();
-    taskButton.onClick.listen(toggleToPendingState);
+    pendingTodoList.removeWhere((todo) => todo.id == index);
+    div.remove();
+  }
 
-    div.children.add(taskButton);
-    div.children.add(buttonRemove);
-    todoDoneUI.children.add(div);
-  };
-}
+  // Toggle state from done to pending
+  void toggleToPendingState(Event event) {
+    Element div = (event.currentTarget as Element).parent;
+    Element button = (event.currentTarget as Element);
+    int index = int.parse(button.id);
 
-// Toggle state from pending to done
-void toggleToDoneState(Event event) {
-  Element button = (event.currentTarget as Element);
-  int index = int.parse(button.id.split('-')[0]);
-  pendingTodoList.removeAt(index);
-  String text = button.text.split('\n')[0];
-  doneTodoList.add(text);
-  updateUI();
-}
+    Todo todo = doneTodoList.firstWhere((todo) => todo.id == index);
+    todo.state = "pending";
+    pendingTodoList.add(todo);
+    todo.addTodo(todoUI);
 
-// Toggle state from done to pending
-void toggleToPendingState(Event event) {
-  Element button = (event.currentTarget as Element);
-  int index = int.parse(button.id.split('-')[0]);
-  doneTodoList.removeAt(index);
-  String text = button.text.split('\n')[0];
-  pendingTodoList.add(text);
-  updateUI();
-}
-
-// Remove element from the list
-void removeTask(MouseEvent event) {
-  event.stopPropagation();
-  Element div = (event.currentTarget as Element).parent;
-  Element button = (event.currentTarget as Element);
-  int index = int.parse(button.id.split('-')[0]);
-  pendingTodoList.removeAt(index);
-  div.remove();
+    doneTodoList.removeWhere((todo) => todo.id == index);
+    div.remove();
+  }
 }
